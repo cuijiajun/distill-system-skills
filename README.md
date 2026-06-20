@@ -168,14 +168,6 @@ distilled/
 ⑤ 观察结果 → 应答用户
 ```
 
-## 实际案例
-
-已验证的蒸馏项目：
-
-- **jupiter_app**（移动审批网关）— Spring Boot 网关，65 个 API 工具
-- **spingBootDemo**（多功能实验项目）— Spring Boot，35 个 API 工具
-- **datahub-backend**（数据交互平台）— 进行中
-
 ## 技术栈
 
 - 适用于任何语言/框架的业务系统（Java/Python/Go/Node.js...）
