@@ -49,30 +49,12 @@ description: Use when reverse-engineering / 蒸馏 / 逆向工程 / 解析 / 理
 > **迭代回路**：S6 或 S2–S5 任何阶段发现缺口 → 回到 S2–S5 修复 → 重新验证。
 > 每阶段详细产出/检查点见 `reference/stages.md`。
 
-8. **生成能力包**：`capabilities.json`——每个用例级 API 描述为一个 function-calling 工具（见下格式）
-
-9. **拷贝查看器 + 生成内嵌数据**（机械操作，极易漏——**必须立即执行，不可跳过**）：
-   - 拷贝 `assets/viewer.html` → `distilled/index.html`
-   - **生成 `distilled/data.js`**：把 distilled/ 下所有 `.md`/`.json` 文件内容内嵌（格式见 `templates/data.js`），这样打开 index.html 时**自动加载**，无需手动选目录。**预计算 `toolCount`/`domainCount` 写入 `__DISTILLED_DATA__`**（从 capabilities.json 解析 tools 数量，从 domain/ 目录统计对象数），避免浏览器端二次解析失败导致卡片显示"0 接口"
-   - **生成 `distilled/data.js` 时同步内嵌大模型配置**：读取 `~/.joyincode/opencode.json`（或 `~/.config/opencode/opencode.json`），提取 `provider.*.options.baseURL`、`provider.*.options.apiKey`、`model`，写入 `window.__DISTILLED_SETTINGS__`。**model 须去掉 provider 前缀**（如 `JoyinCode/Qwen3.6-35B` → `Qwen3.6-35B`）。读取不到则省略（用户首次发送时手动填）
-   - 执行后验证：`distilled/index.html` 和 `distilled/data.js` **都存在**。**缺任一个不算完成。**
-
-10. **创建/更新项目根 AGENTS.md**（机械操作，极易漏——**必须立即执行，不可跳过**）：
-    在**项目根目录**（非 distilled/ 内）的 `AGENTS.md`（无则新建）写入以下内容：
-    ```markdown
-    ## 蒸馏文档（AI 能力说明）
-    本系统已蒸馏为 AI 可用的领域能力文档，位于 `distilled/`。
-    - 系统能力入口：`distilled/AGENTS.md`（API 清单 + curl 示例 + 编排）
-    - 查看器/对话：双击 `distilled/index.html`
-    - 涉及本系统业务时，先读 `distilled/00-overview.md` 了解系统能力。
-    ```
-    执行后立即验证文件存在：项目根 `AGENTS.md`。**若不存在，蒸馏不算完成。**
-
-> ⛔ **收尾强制门**：在声称"蒸馏完成"之前，必须确认以下 3 个文件全部存在：
-> - `distilled/capabilities.json`
-> - `distilled/index.html`（← 最常遗漏！）
-> - 项目根 `AGENTS.md`（← 第二常遗漏！）
-> **缺任何一个都不算完成。不要说"已经蒸馏好了"——先验证文件存在。**
+8. **收尾脚本（step 8+9+10 合并执行，必须运行）**：
+   生成完所有 distilled/*.md 文件后，**立即运行**收尾脚本（一步完成 capabilities.json 检查 + index.html 拷贝 + data.js 生成 + 根 AGENTS.md 创建 + 自检）：
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File "<skill目录>/scripts/distill-finalize.ps1" -DistilledDir "<项目>/distilled"
+   ```
+   **不运行此脚本不算蒸馏完成。** 脚本会自检并打印 ✅/❌ 清单。
 
 **读取优先级（可信度，裁决冲突时用）**：路由层 = 服务层 ＞ DB 约束 ＞ 本体 ＞ 需求文档
 
