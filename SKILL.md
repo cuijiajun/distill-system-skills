@@ -51,8 +51,10 @@ description: Use when reverse-engineering / 蒸馏 / 逆向工程 / 解析 / 理
 
 8. **收尾脚本（step 8+9+10 合并执行，必须运行）**：
    生成完所有 distilled/*.md 文件后，**立即运行**收尾脚本（一步完成 capabilities.json 检查 + index.html 拷贝 + data.js 生成 + 根 AGENTS.md 创建 + 自检）：
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File "<skill目录>/scripts/distill-finalize.ps1" -DistilledDir "<项目>/distilled"
+   ```bash
+   python scripts/distill-finalize.py --distilled-dir <项目>/distilled
+   # Mac/Linux 可能需要 python3
+   python3 scripts/distill-finalize.py --distilled-dir <项目>/distilled
    ```
    **不运行此脚本不算蒸馏完成。** 脚本会自检并打印 ✅/❌ 清单。
 
