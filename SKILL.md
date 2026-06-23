@@ -58,6 +58,13 @@ description: Use when reverse-engineering / 蒸馏 / 逆向工程 / 解析 / 理
    ```
    **不运行此脚本不算蒸馏完成。** 脚本会自检并打印 ✅/❌ 清单。
 
+9. **综合验证（必须运行，在收尾脚本之后）**：
+   运行验证脚本检查所有 S0-S6 检查点 + 护栏：
+   ```bash
+   python scripts/distill-verify.py --distilled-dir <项目>/distilled --source-dir <项目源码根>
+   ```
+   脚本检查：Controller 覆盖率、文件完整性、capabilities.json 合法性、规则执行方标注、交叉引用断链、密钥脱敏、机械文件存在等。**有 ❌ 不算完成，必须修复后重跑直到全 ✅。**
+
 **读取优先级（可信度，裁决冲突时用）**：路由层 = 服务层 ＞ DB 约束 ＞ 本体 ＞ 需求文档
 
 **文件过滤规则（S0 扫描前必读）**：
